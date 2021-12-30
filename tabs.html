@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/tailwindcss-jit-cdn"></script>
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <style>
+        *:focus {
+        outline: none;
+        }
+        button:focus{
+        outline: none;
+        }
+
+    </style>
+</head>
+<body x-data="{active: 1}" >
+    <!-- Modal toggle -->
+   <div class="flex items-end justify-center bg-blue-400 h-24 w-full mx-auto" >
+       <div class="flex h-fit justify-between items-center" >
+       <div>
+        <button 
+        x-on:click="active= 1"
+        class="block text-white  
+              border-transparent focus:border-transparent focus:ring-0
+             hover:opacity-50 
+             font-medium text-sm px-5 py-2.5 text-center " 
+        type="button" 
+        data-modal-toggle="default-modal"
+      >
+          <span :class="{'opacity-70':active !== 1}" >tab 1</span>
+        </button>
+        <div :class="{'w-full h-1 bg-white':active===1,'w-full h-1 bg-white opacity-0':active !== 1}" ></div>
+       </div>
+
+       <div>
+       <button 
+        x-on:click="active= 2"
+        class="block text-white   
+             hover:opacity-50 focus:outline-transparent 
+             font-medium text-sm px-5 py-2.5 text-center " 
+        type="button" 
+        data-modal-toggle="default-modal"
+      >
+          <span :class="{'opacity-70':active !== 2}" >tab 2</span>
+        </button>
+        <div :class="{'w-full h-1 bg-white':active===2,'w-full h-1 bg-white opacity-0':active !== 2}" ></div>
+       </div>
+
+       <div>
+       <button 
+        x-on:click="active= 3"
+        class="block text-white   
+             hover:opacity-50 focus:outline-transparent 
+             font-medium text-sm px-5 py-2.5 text-center " 
+        type="button" 
+        data-modal-toggle="default-modal"
+      >
+           <span :class="{'opacity-70':active !== 3}" >tab 2</span>
+        </button>
+        <div :class="{'w-full h-1 bg-white':active===3,'w-full h-1 bg-white opacity-0':active !== 3}" ></div>
+       </div>
+   </div>
+   </div>
+  
+   <div class="w-full mx-auto w-64 " >
+    <div x-show="active===1" >
+        Lorem ipsum, dolor sit amet consectetur adipisicing elit.
+         Nemo corporis eum ipsa expedita provident perferendis. 
+          ssitatibus!
+         Corporis error earum, ducimus cumque officiis magni repudiandae veniam laboriosam aliquam, 
+         nisi a possimus dolorum, alias fugiat quisquam! Perferendis sint sequi, veniam magni dolorum
+         neque modi id consectetur laborum eveniet, velit exercitationem aperiam nulla assumenda 
+         doloribus nobis fugit voluptas soluta eligendi alias impedit voluptatem cum fugiat dolorem.
+    </div>
+    <div x-show="active===2" >
+         doloremque velit! Vero qui incidunt consectetur sequi,
+         dolore similique corrupti excepturi cumque omnis totam iure? Eius, sequi necessitatibus!
+         Corporis error earum, ducimus cumque officiis magni repudiandae veniam laboriosam aliquam, 
+         nisi a possimus dolorum, alias fugiat quisquam! Perferendis sint sequi, veniam magni dolorum
+         neque modi id consectetur laborum eveniet, velit exercitationem aperiam nulla assumenda 
+         doloribus nobis fugit voluptas soluta eligendi alias impedit voluptatem cum fugiat dolorem.
+    </div>
+    <div x-show="active===3" >
+        m
+         neque modi id consectetur laborum eveniet, velit exercitationem aperiam nulla assumenda 
+         doloribus nobis fugit voluptas soluta eligendi alias impedit voluptatem cum fugiat dolorem.
+        m
+         neque modi id consectetur laborum eveniet, velit exercitationem aperiam nulla assumenda 
+         doloribus nobis fugit voluptas soluta eligendi alias impedit voluptatem cum fugiat dolorem.
+    </div>
+   
+</div>
+  
+</body>
+</html>

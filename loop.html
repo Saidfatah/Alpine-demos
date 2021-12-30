@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/tailwindcss-jit-cdn"></script>
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <style>
+        *:focus {
+        outline: none;
+        }
+        button:focus{
+        outline: none;
+        }
+
+    </style>
+</head>
+<body  x-data="{
+    minumumLegs:8,
+    animals:[
+        {name:'camel',legs:4},
+        {name:'dog',legs:4},
+        {name:'cat',legs:4},
+        {name:'duck',legs:2},
+        {name:'penguine',legs:2},
+        {name:'spider',legs:8},
+        {name:'octupos',legs:16},
+        {name:'eagl',legs:2},
+        {name:'human',legs:2},
+        {name:'shympanzy',legs:2},
+        {name:'snake',legs:0},
+    ]}"
+    class="bg-gray-100"
+    >
+    <div class="w-64 mx-auto  " >
+        <h1 class="text-24" >Animal search</h1>
+    <div>
+        <label>Minumum legs</label>
+        <input  class="w-full" type="number" x-model.number="minumumLegs" min="0" />
+    </div>
+    <ul class="" >
+        <template x-for="animal in animals.filter(a=>a.legs>=minumumLegs)">
+            <li 
+            class="mt-4 px-4 py-2 rounded shadow bg-white"
+            x-text="animal.name"></li>
+        </template>
+    </ul>
+    </div>
+ 
+</body>
+</html>
