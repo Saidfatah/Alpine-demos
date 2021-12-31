@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/tailwindcss-jit-cdn"></script>
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <style>
+        *:focus {
+        outline: none;
+        }
+        button:focus{
+        outline: none;
+        }
+
+    </style>
+</head>
+<body  
+    x-data="{
+    posts:[],
+    isOpen:false,
+    selectedPost:0,
+    limit:10,
+    start:0,
+    init() {
+        console.log('I am called automatically')
+    },
+    sleeper(ms) {
+        return function(x) {
+          return new Promise(resolve => setTimeout(() => resolve(x), ms));
+        };
+    },
+    getPostAttrib(field) {
+        console.log(this.selectedPost)
+        const targetPost = this.posts.filter(p=>p.id==this.selectedPost)[0]
+        console.log(targetPost)
+        if(targetPost) return targetPost[field] 
+
+    }
+    }"
+    class="bg-gray-100"
+    @scroll.window="
+    ()=>{
+        if(posts.length ===0) return;
+        const triggererTop= document.querySelector('#loadMoreTriggerer').getBoundingClientRect().top
+        const screenHeight = window.innerHeight;
+        if(triggererTop <  screenHeight) {
+            limit +=10;
+            start +=10; 
+            console.log({start})
+        }
+    }
+    ">
+    <div class="w-64 mx-auto  " >
+    <h1 class="text-24" >infinite list </h1>
+    <ul 
+    x-effect=" fetch('https://jsonplaceholder.typicode.com/posts?'+'_start'+start+'&_limit='+limit)
+    .then(response => response.json())
+    .then(sleeper(1000))
+    .then(data => posts=data)"
+    >
+        <template x-for="post in posts">
+            <li 
+            class="mt-4 px-4 py-2 rounded shadow bg-white"
+            @click="()=>{
+                selectedPost=post.id
+                isOpen=true
+                console.log({selectedPost})
+            }"
+            >
+            <p class="uppercase mb-2" x-text="post.title" ></p>
+            <!-- <p x-text="post.body"></p> -->
+        </li>
+        </template>
+
+        <!-- load more triggerer  -->
+        <div 
+        x-show="posts.length>0"
+        id="loadMoreTriggerer" 
+        class="flex justify-center items-center  h-12 w-full" > 
+        <p>
+            Loading more posts
+        </p>
+        <img class="w-20 h-20" src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/29/Loader.gif/480px-Loader.gif"/>
+        </div>
+    </ul>
+    </div>
+    
+     <!-- selcted post modal -->
+  <div 
+  x-show="isOpen"
+  id="default-modal" 
+  aria-hidden="true" 
+  class="overflow-y-auto h-full   overflow-x-hidden fixed right-0 left-0 top-0 z-50 justify-center items-center h-modal md:h-full md:inset-0"
+  >
+      <div  class="h-full w-full bg-gray-500/50" >
+        <div class="flex justify-center items-center relative px-4 w-full max-w-2xl h-full md:h-auto">
+            <!-- Modal content -->
+            <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                <!-- Modal header -->
+                <div class="flex justify-between items-start p-5 rounded-t border-b dark:border-gray-600">
+                    <h3 
+                    x-text="getPostAttrib('title')"
+                    class="text-xl font-semibold text-gray-900 lg:text-2xl dark:text-white">
+                    </h3>
+                    <button
+                    x-on:click="isOpen= false" 
+                    type="button" 
+                    class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-toggle="default-modal">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>  
+                    </button>
+                </div>
+                <!-- Modal body -->
+                <div class="p-6 space-y-6">
+                    <p 
+                    x-text="getPostAttrib('body')"
+                    class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
+                    </p>
+                 
+                </div>
+            </div>
+        </div>
+      </div>
+  </div>
+</body>
+</html>
