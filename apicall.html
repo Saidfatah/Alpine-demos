@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/tailwindcss-jit-cdn"></script>
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <style>
+        *:focus {
+        outline: none;
+        }
+        button:focus{
+        outline: none;
+        }
+
+    </style>
+</head>
+<body  x-data="{
+    posts:[]
+    }"
+    class="bg-gray-100"
+    >
+    <div class="w-64 mx-auto  " >
+        <h1 class="text-24" >Api call</h1>
+    <ul 
+    x-init="posts = await(await fetch('https://jsonplaceholder.typicode.com/posts')).json()"
+    class="" >
+        <template x-for="post in posts">
+            <li 
+            class="mt-4 px-4 py-2 rounded shadow bg-white"
+            >
+            <p class="uppercase mb-2" x-text="post.title" ></p>
+            <p x-text="post.body"></p>
+        </li>
+        </template>
+    </ul>
+    </div>
+ 
+</body>
+</html>
