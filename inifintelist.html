@@ -80,10 +80,8 @@
         x-show="posts.length>0"
         id="loadMoreTriggerer" 
         class="flex justify-center items-center  h-12 w-full" > 
-        <p>
-            Loading more posts
-        </p>
-        <img class="w-20 h-20" src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/29/Loader.gif/480px-Loader.gif"/>
+        <p  x-ignore >  Loading more posts </p>
+        <img  x-ignore class="w-20 h-20" src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/29/Loader.gif/480px-Loader.gif"/>
         </div>
     </ul>
     </div>
@@ -120,7 +118,7 @@
                     </button>
                 </div>
                 <!-- Modal body -->
-                <div class="p-6 space-y-6">
+                <div  x-ignore class="p-6 space-y-6">
                     <p 
                     x-text="getPostAttrib('body')"
                     class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
