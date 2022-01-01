@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/tailwindcss-jit-cdn"></script>
+    <script defer src="https://unpkg.com/@alpinejs/persist@3.x.x/dist/cdn.min.js"></script>
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <style>
+        *:focus {
+             outline: none;
+        }
+        input:focus{
+             outline: none;
+        }
+        input:focus, textarea:focus, select:focus{
+        outline: none;
+        }   
+
+    </style>
+</head>
+<body x-data class="p-4" >
+    <div class="w-64 mx-auto " >
+        <h1 class="text-center" >Todo list</h1>
+        <form @submit.prevent="$store.todos.addTodo()" class="w-full flex" >
+            <input 
+            class="w-full rounded  shadow p-1 bg-white" 
+            type="text" 
+            x-model="$store.todos.todoTitle" 
+            @input="$refs.addButton.disabled=$el.value ==''"
+            />
+            <button 
+            x-ref="addButton"
+            class="ml-1 rounded text-green-300 shadow p-1 bg-white" 
+            :class="{'opacity-50 cursor-not-allowed':$store.todos.todoTitle ===''}"
+            type="submit" >
+                <svg xmlns="http://www.w3.org/2000/svg" class=" h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd" />
+                  </svg>
+            </button>
+        </form>
+        <ul class="w-full " >
+            <template x-for="(todo,index) in $store.todos.todos">
+                 <li 
+                 x-transition
+                 class=" flex justify-between items-center mt-4 px-4 py-2 w-full rounded shadow bg-white" >
+                     <p 
+                     class="w-full h-full" 
+                     :class="{'line-through':todo.done}"
+                     x-text="todo.title" ></p>
+                     <!-- <input class="w-full h-full" type="text" x-model="todoTitle" /> -->
+                     <div class="flex justify-between items-center" >
+                        <input 
+                        type="checkbox" 
+                        @change="$store.todos.toggleDone()" 
+                        x-model.checked="todo.done" 
+                        class="rounded text-red-300 shadow p-1 bg-white" 
+                        />
+                        <button @click="$store.todos.removeTodo(todo.id)" class="rounded ml-1 text-red-300 shadow p-1 bg-white" >
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                              </svg>
+                        </button>
+                        <!-- <button>edit</button> -->
+                     </div>
+                </li>
+            </template>
+        </ul>
+    </div>
+    <script>
+        
+
+    document.addEventListener('alpine:init', () => {
+        Alpine.store('darkMode', {
+            on: false,
+ 
+            toggle() {
+                this.on = ! this.on
+            }
+        })
+       
+        // todos:$persist([
+        Alpine.store('todos', {
+            init() {
+                this.getTodos()
+            },
+            todos:[
+             {
+                 id:1,
+                 title:'title 1 ',
+                 done:false
+             },
+             {
+                 id:2,
+                 title:'title 2 ',
+                 done:true
+             },
+             {
+                 id:3,
+                 title:'title 3 ',
+                 done:false
+             }
+             ],
+            todoTitle:'',
+            sortTodos(){
+             this.todos=this.todos.sort((a,b)=>a.done-b.done)
+            },
+            getTodos() {
+                const todosFromLocal  = localStorage.getItem('todos')
+                if(todosFromLocal)  this.todos= JSON.parse(todosFromLocal)
+                this.sortTodos()
+            },
+            getTodo() {
+                return this.todos.filter(t=>t.id===todoId)[0] 
+            },
+            removeTodo(todoId){
+                return (e)=> {
+                this.todos=[...this.todos.filter(t=>t.id !== todoId)]
+                this.sortTodos()
+                localStorage.setItem('todos',JSON.stringify(this.todos))
+
+            }
+            },
+            toggleDone(){
+                this.sortTodos()
+                localStorage.setItem('todos',JSON.stringify(this.todos))
+            },
+            addTodo(){
+                return ()=>{
+                const newTodo = {
+                    id:this.todos.length+1,
+                    title:this.todoTitle,
+                    done:false
+                }
+                this.todos.push(newTodo)
+                this.sortTodos()
+                localStorage.setItem('todos',JSON.stringify(this.todos))
+                }
+            },
+        })
+    })
+    </script>
+</body>
+</html>
