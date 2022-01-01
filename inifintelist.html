@@ -91,16 +91,23 @@
      <!-- selcted post modal -->
   <div 
   x-show="isOpen"
+  x-transition:enter.duration.500ms
+  x-transition:leave.duration.300ms
   id="default-modal" 
   aria-hidden="true" 
   class="overflow-y-auto h-full   overflow-x-hidden fixed right-0 left-0 top-0 z-50 justify-center items-center h-modal md:h-full md:inset-0"
   >
       <div  class="h-full w-full bg-gray-500/50" >
-        <div class="flex justify-center items-center relative px-4 w-full max-w-2xl h-full md:h-auto">
+        <div class="flex justify-center items-center relative px-4 w-full h-screen ">
             <!-- Modal content -->
-            <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+            <div 
+            x-show="isOpen"
+            x-transition:enter.duration.500ms
+            x-transition:leave.duration.100ms
+            class="relative bg-white rounded-lg shadow dark:bg-gray-700">
                 <!-- Modal header -->
-                <div class="flex justify-between items-start p-5 rounded-t border-b dark:border-gray-600">
+                <div 
+                class="flex justify-between items-start p-5 rounded-t border-b dark:border-gray-600">
                     <h3 
                     x-text="getPostAttrib('title')"
                     class="text-xl font-semibold text-gray-900 lg:text-2xl dark:text-white">
